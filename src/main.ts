@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import 'virtual:uno.css';
 import '@/assets/styles/index.scss';
 import 'element-plus/theme-chalk/dark/css-vars.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // App、router、store
 import App from './App.vue';
