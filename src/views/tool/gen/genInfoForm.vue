@@ -15,7 +15,7 @@
         <el-form-item prop="packageName">
           <template #label>
             生成包路径
-            <el-tooltip content="生成在哪个java包下，例如 com.ruoyi.system" placement="top">
+            <el-tooltip content="生成在哪个java包下，例如 com.ruoyi.blog" placement="top">
               <el-icon><question-filled /></el-icon>
             </el-tooltip>
           </template>
@@ -27,7 +27,7 @@
         <el-form-item prop="moduleName">
           <template #label>
             生成模块名
-            <el-tooltip content="可理解为子系统名，例如 system" placement="top">
+            <el-tooltip content="可理解为子系统名，例如 blog" placement="top">
               <el-icon><question-filled /></el-icon>
             </el-tooltip>
           </template>
