@@ -138,6 +138,22 @@
         <el-form-item label="封面图片" prop="coverImg">
           <image-upload :limit="1" v-model="form.coverImg" />
         </el-form-item>
+        <el-form-item label="标签">
+          <el-select v-model="form.tags" filterable multiple placeholder="请选择标签">
+            <el-option v-for="item in tagsOptions" :key="item.roleId" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="标签">
+          <el-checkbox-group v-model="form.tags">
+            <el-row :gutter="20">
+              <el-col :span="6" v-for="item in tagsOptions" :key="item.roleId">
+                <el-checkbox :label="item.id">{{ item.name }}</el-checkbox>
+              </el-col>
+            </el-row>
+          </el-checkbox-group>
+        </el-form-item> -->
+
         <el-form-item label="分类" prop="category">
           <el-select v-model="form.category" placeholder="请选择分类">
             <el-option v-for="dict in t_articles_type" :key="dict.value" :label="dict.label"
@@ -196,6 +212,8 @@ const total = ref(0);
 const queryFormRef = ref<ElFormInstance>();
 const articlesFormRef = ref<ElFormInstance>();
 
+const tagsOptions = ref<any[]>([]);
+
 const dialog = reactive<DialogOption>({
   visible: false,
   title: ''
@@ -241,8 +259,8 @@ const { queryParams, form, rules } = toRefs(data);
 
 const getTags = async () => {
   const res = await getArticlesSelect();
-  console.log(res.data);
-  // form.value.category = res[0].id;
+  tagsOptions.value = res.data;
+  // console.log(res.data);
 }
 
 /** 查询文章管理列表 */
@@ -308,6 +326,7 @@ const submitForm = () => {
     if (valid) {
       buttonLoading.value = true;
       if (form.value.id) {
+        console.log(form.value);
         await updateArticles(form.value).finally(() => buttonLoading.value = false);
       } else {
         await addArticles(form.value).finally(() => buttonLoading.value = false);

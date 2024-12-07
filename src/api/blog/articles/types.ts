@@ -62,7 +62,6 @@ export interface ArticlesVO {
    * 更新时间
    */
   updatedAt: string;
-
 }
 
 export interface ArticlesForm extends BaseEntity {
@@ -111,10 +110,10 @@ export interface ArticlesForm extends BaseEntity {
    */
   publishTime?: string;
 
+  tags?: string[];
 }
 
 export interface ArticlesQuery extends PageQuery {
-
   /**
    * 文章标题
    */
@@ -150,11 +149,8 @@ export interface ArticlesQuery extends PageQuery {
    */
   createdAt?: string;
 
-    /**
-     * 日期范围参数
-     */
-    params?: any;
+  /**
+   * 日期范围参数
+   */
+  params?: any;
 }
-
-
-
