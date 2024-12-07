@@ -2,6 +2,13 @@ import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { TagsVO, TagsForm, TagsQuery } from '@/api/blog/tags/types';
 
+export const getArticlesSelect = () => {
+  return request({
+    url: '/blog/tags/articlesSelect',
+    method: 'get'
+  });
+};
+
 /**
  * 查询文章标签管理列表
  * @param query
