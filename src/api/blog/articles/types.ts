@@ -62,6 +62,8 @@ export interface ArticlesVO {
    * 更新时间
    */
   updatedAt: string;
+
+  tags: string[];
 }
 
 export interface ArticlesForm extends BaseEntity {
@@ -153,4 +155,6 @@ export interface ArticlesQuery extends PageQuery {
    * 日期范围参数
    */
   params?: any;
+
+  tags?: string[];
 }

@@ -73,6 +73,15 @@
         <el-table-column label="文章标题" align="center" prop="title" />
         <el-table-column label="文章摘要" align="center" prop="summary" />
         <el-table-column label="文章内容" align="center" prop="content" />
+        <el-table-column label="标签" align="center">
+          <template #default="scope">
+            <span v-for="(tag, index) in scope.row.tags" :key="tag.id">
+              <el-tag :type="tag.type" style="margin-right: 5px;">
+                {{ tag.name }}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column label="封面图片" align="center" prop="coverImgUrl" width="100">
           <template #default="scope">
             <image-preview :src="scope.row.coverImgUrl" :width="50" :height="50" />
@@ -139,21 +148,11 @@
           <image-upload :limit="1" v-model="form.coverImg" />
         </el-form-item>
         <el-form-item label="标签">
-          <el-select v-model="form.tags" filterable multiple placeholder="请选择标签">
-            <el-option v-for="item in tagsOptions" :key="item.roleId" :label="item.name" :value="item.id">
-            </el-option>
+          <el-select v-model="form.tags" filterable multiple placeholder="请选择标签" :collapse-tags="false"
+            tag-placeholder="添加标签">
+            <el-option v-for="item in tagsOptions" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="标签">
-          <el-checkbox-group v-model="form.tags">
-            <el-row :gutter="20">
-              <el-col :span="6" v-for="item in tagsOptions" :key="item.roleId">
-                <el-checkbox :label="item.id">{{ item.name }}</el-checkbox>
-              </el-col>
-            </el-row>
-          </el-checkbox-group>
-        </el-form-item> -->
-
         <el-form-item label="分类" prop="category">
           <el-select v-model="form.category" placeholder="请选择分类">
             <el-option v-for="dict in t_articles_type" :key="dict.value" :label="dict.label"
@@ -260,13 +259,13 @@ const { queryParams, form, rules } = toRefs(data);
 const getTags = async () => {
   const res = await getArticlesSelect();
   tagsOptions.value = res.data;
-  // console.log(res.data);
 }
 
 /** 查询文章管理列表 */
 const getList = async () => {
   loading.value = true;
   const res = await listArticles(queryParams.value);
+  console.log(res);
   articlesList.value = res.rows;
   total.value = res.total;
   loading.value = false;
@@ -316,6 +315,7 @@ const handleUpdate = async (row?: ArticlesVO) => {
   const _id = row?.id || ids.value[0]
   const res = await getArticles(_id);
   Object.assign(form.value, res.data);
+  form.value.tags = res.data.tags.map(tag => tag.id); // 提取标签 ID
   dialog.visible = true;
   dialog.title = "修改文章管理";
 }
