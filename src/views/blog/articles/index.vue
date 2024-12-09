@@ -69,10 +69,10 @@
 
       <el-table v-loading="loading" :data="articlesList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="主键ID" align="center" prop="id" v-if="true" />
+        <!-- <el-table-column label="主键ID" align="center" prop="id" v-if="true" /> -->
         <el-table-column label="文章标题" align="center" prop="title" />
         <el-table-column label="文章摘要" align="center" prop="summary" />
-        <el-table-column label="文章内容" align="center" prop="content" />
+        <!-- <el-table-column label="文章内容" align="center" prop="content" /> -->
         <el-table-column label="标签" align="center">
           <template #default="scope">
             <span v-for="(tag, index) in scope.row.tags" :key="tag.id">
@@ -103,17 +103,17 @@
             <dict-tag :options="t_articles_status" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column label="发布时间" align="center" prop="publishTime" width="180">
+        <el-table-column label="发布时间" align="center" prop="publishTime" width="120">
           <template #default="scope">
             <span>{{ parseTime(scope.row.publishTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createdAt" width="180">
+        <el-table-column label="创建时间" align="center" prop="createdAt" width="120">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createdAt, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="更新时间" align="center" prop="updatedAt" width="180">
+        <el-table-column label="更新时间" align="center" prop="updatedAt" width="120">
           <template #default="scope">
             <span>{{ parseTime(scope.row.updatedAt, '{y}-{m}-{d}') }}</span>
           </template>
