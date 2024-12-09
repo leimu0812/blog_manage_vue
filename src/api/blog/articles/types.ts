@@ -1,3 +1,9 @@
+export interface Tag {
+  id: string;
+  name: string;
+  type: string;
+}
+
 export interface ArticlesVO {
   /**
    * 主键ID
@@ -63,7 +69,7 @@ export interface ArticlesVO {
    */
   updatedAt: string;
 
-  tags: string[];
+  tags: Tag[];
 }
 
 export interface ArticlesForm extends BaseEntity {

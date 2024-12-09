@@ -265,7 +265,6 @@ const getTags = async () => {
 const getList = async () => {
   loading.value = true;
   const res = await listArticles(queryParams.value);
-  console.log(res);
   articlesList.value = res.rows;
   total.value = res.total;
   loading.value = false;
