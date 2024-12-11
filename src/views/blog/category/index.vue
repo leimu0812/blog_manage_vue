@@ -1,18 +1,19 @@
 <template>
   <div class="p-2">
-    <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+    <transition :enter-active-class="proxy?.animate.searchAnimate.enter"
+      :leave-active-class="proxy?.animate.searchAnimate.leave">
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
             <el-form-item label="分类名称" prop="categoryName">
               <el-input v-model="queryParams.categoryName" placeholder="请输入分类名称" clearable @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="显示顺序" prop="sortOrder">
-              <el-input v-model="queryParams.sortOrder" placeholder="请输入显示顺序" clearable @keyup.enter="handleQuery" />
+            <el-form-item label="分类描述" prop="description">
+              <el-input v-model="queryParams.description" placeholder="请输入分类描述" clearable @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item label="状态" prop="status">
-              <el-select v-model="queryParams.status" placeholder="请选择状态" clearable >
-                <el-option v-for="dict in t_show_status" :key="dict.value" :label="dict.label" :value="dict.value"/>
+              <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
+                <el-option v-for="dict in t_show_status" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -28,16 +29,20 @@
       <template #header>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['blog:category:add']">新增</el-button>
+            <el-button type="primary" plain icon="Plus" @click="handleAdd"
+              v-hasPermi="['blog:category:add']">新增</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['blog:category:edit']">修改</el-button>
+            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()"
+              v-hasPermi="['blog:category:edit']">修改</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['blog:category:remove']">删除</el-button>
+            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()"
+              v-hasPermi="['blog:category:remove']">删除</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['blog:category:export']">导出</el-button>
+            <el-button type="warning" plain icon="Download" @click="handleExport"
+              v-hasPermi="['blog:category:export']">导出</el-button>
           </el-col>
           <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
@@ -45,30 +50,37 @@
 
       <el-table v-loading="loading" :data="categoryList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="分类ID" align="center" prop="categoryId" v-if="true" />
+        <el-table-column label="分类ID" align="center" prop="categoryId" v-if="false" />
         <el-table-column label="分类名称" align="center" prop="categoryName" />
         <el-table-column label="分类描述" align="center" prop="description" />
-        <el-table-column label="图标" align="center" prop="icon" />
+        <el-table-column label="图标" align="center" prop="icon">
+          <template #default="scope">
+            <svg-icon :icon-class="scope.row.icon" />
+          </template>
+        </el-table-column>
         <el-table-column label="文章数量" align="center" prop="articleCount" />
         <el-table-column label="显示顺序" align="center" prop="sortOrder" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
-            <dict-tag :options="t_show_status" :value="scope.row.status"/>
+            <dict-tag :options="t_show_status" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
-              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['blog:category:edit']"></el-button>
+              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                v-hasPermi="['blog:category:edit']"></el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['blog:category:remove']"></el-button>
+              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                v-hasPermi="['blog:category:remove']"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize" @pagination="getList" />
     </el-card>
     <!-- 添加或修改文章分类对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
@@ -81,18 +93,13 @@
         </el-form-item>
         <el-form-item label="图标" prop="icon">
           <icon-select v-model="form.icon" />
-          <!-- < v-model="form.icon" placeholder="请输入图标" /> -->
         </el-form-item>
         <el-form-item label="显示顺序" prop="sortOrder">
-          <el-input v-model="form.sortOrder" placeholder="请输入显示顺序" />
+          <el-input-number v-model="form.sortOrder" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in t_show_status"
-              :key="dict.value"
-              :value="dict.value"
-            >{{dict.label}}</el-radio>
+            <el-radio v-for="dict in t_show_status" :key="dict.value" :value="dict.value">{{ dict.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -139,12 +146,12 @@ const initFormData: CategoryForm = {
   status: undefined,
 }
 const data = reactive<PageData<CategoryForm, CategoryQuery>>({
-  form: {...initFormData},
+  form: { ...initFormData },
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     categoryName: undefined,
-    sortOrder: undefined,
+    description: undefined,
     status: undefined,
     params: {
     }
@@ -190,7 +197,7 @@ const cancel = () => {
 
 /** 表单重置 */
 const reset = () => {
-  form.value = {...initFormData};
+  form.value = { ...initFormData };
   categoryFormRef.value?.resetFields();
 }
 
@@ -236,9 +243,9 @@ const submitForm = () => {
     if (valid) {
       buttonLoading.value = true;
       if (form.value.categoryId) {
-        await updateCategory(form.value).finally(() =>  buttonLoading.value = false);
+        await updateCategory(form.value).finally(() => buttonLoading.value = false);
       } else {
-        await addCategory(form.value).finally(() =>  buttonLoading.value = false);
+        await addCategory(form.value).finally(() => buttonLoading.value = false);
       }
       proxy?.$modal.msgSuccess("操作成功");
       dialog.visible = false;

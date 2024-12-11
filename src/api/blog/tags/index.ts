@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { TagsVO, TagsForm, TagsQuery } from '@/api/blog/tags/types';
 
-export const getArticlesSelect = () => {
+export const getTagSelect = () => {
   return request({
     url: '/blog/tags/articlesSelect',
     method: 'get'

@@ -13,7 +13,8 @@
             </el-form-item>
             <el-form-item label="分类" prop="category">
               <el-select v-model="queryParams.category" placeholder="请选择分类" clearable>
-                <el-option v-for="dict in t_articles_type" :key="dict.value" :label="dict.label" :value="dict.value" />
+                <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
+                  :value="item.categoryName"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="是否置顶" prop="isTop">
@@ -87,11 +88,7 @@
             <image-preview :src="scope.row.coverImgUrl" :width="50" :height="50" />
           </template>
         </el-table-column>
-        <el-table-column label="分类" align="center" prop="category">
-          <template #default="scope">
-            <dict-tag :options="t_articles_type" :value="scope.row.category" />
-          </template>
-        </el-table-column>
+        <el-table-column label="分类" align="center" prop="category" />
         <el-table-column label="浏览量" align="center" prop="views" />
         <el-table-column label="是否置顶" align="center" prop="isTop">
           <template #default="scope">
@@ -155,8 +152,8 @@
         </el-form-item>
         <el-form-item label="分类" prop="category">
           <el-select v-model="form.category" placeholder="请选择分类">
-            <el-option v-for="dict in t_articles_type" :key="dict.value" :label="dict.label"
-              :value="dict.value"></el-option>
+            <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
+              :value="item.categoryName"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="文章内容">
@@ -193,11 +190,11 @@
 <script setup name="Articles" lang="ts">
 import { listArticles, getArticles, delArticles, addArticles, updateArticles } from '@/api/blog/articles';
 import { ArticlesVO, ArticlesQuery, ArticlesForm } from '@/api/blog/articles/types';
-
-import { getArticlesSelect } from '@/api/blog/tags'
+import { getTagSelect } from '@/api/blog/tags'
+import { getCategorySelect } from '@/api/blog/category';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { t_articles_status, t_articles_type, t_articles_istop } = toRefs<any>(proxy?.useDict('t_articles_status', 't_articles_type', 't_articles_istop'));
+const { t_articles_status, t_articles_istop } = toRefs<any>(proxy?.useDict('t_articles_status', 't_articles_istop'));
 
 const articlesList = ref<ArticlesVO[]>([]);
 const buttonLoading = ref(false);
@@ -211,6 +208,7 @@ const total = ref(0);
 const queryFormRef = ref<ElFormInstance>();
 const articlesFormRef = ref<ElFormInstance>();
 
+const categoryOptions = ref<any[]>([]);
 const tagsOptions = ref<any[]>([]);
 
 const dialog = reactive<DialogOption>({
@@ -256,8 +254,13 @@ const data = reactive<PageData<ArticlesForm, ArticlesQuery>>({
 
 const { queryParams, form, rules } = toRefs(data);
 
+const getCategory = async () => {
+  const res = await getCategorySelect();
+  console.log(res);
+  categoryOptions.value = res.data;
+}
 const getTags = async () => {
-  const res = await getArticlesSelect();
+  const res = await getTagSelect();
   tagsOptions.value = res.data;
 }
 
@@ -356,5 +359,6 @@ const handleExport = () => {
 onMounted(() => {
   getList();
   getTags();
+  getCategory();
 });
 </script>

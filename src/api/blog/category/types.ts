@@ -30,9 +30,19 @@ export interface CategoryVO {
   sortOrder: number;
 
   /**
-   * 状态
+   * 状态（0停用 1正常）
    */
   status: string;
+
+  /**
+   * 创建时间
+   */
+  createTime: string;
+
+  /**
+   * 更新时间
+   */
+  updateTime: string;
 
 }
 
@@ -63,7 +73,7 @@ export interface CategoryForm extends BaseEntity {
   sortOrder?: number;
 
   /**
-   * 状态
+   * 状态（0停用 1正常）
    */
   status?: string;
 
@@ -77,12 +87,12 @@ export interface CategoryQuery extends PageQuery {
   categoryName?: string;
 
   /**
-   * 显示顺序
+   * 分类描述
    */
-  sortOrder?: number;
+  description?: string;
 
   /**
-   * 状态
+   * 状态（0停用 1正常）
    */
   status?: string;
 

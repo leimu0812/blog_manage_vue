@@ -96,7 +96,6 @@
       <el-form ref="socialLinksFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="图标" prop="icon">
           <icon-select v-model="form.icon" />
-          <!-- <el-input v-model="form.icon" placeholder="请输入图标" /> -->
         </el-form-item>
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题" />
@@ -105,7 +104,8 @@
           <el-input v-model="form.url" placeholder="请输入链接地址" />
         </el-form-item>
         <el-form-item label="排序顺序" prop="sortOrder">
-          <el-input v-model="form.sortOrder" placeholder="请输入排序顺序" />
+          <!-- <el-input v-model="form.sortOrder" placeholder="请输入排序顺序" /> -->
+          <el-input-number v-model="form.sortOrder" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">

@@ -2,6 +2,14 @@ import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { CategoryVO, CategoryForm, CategoryQuery } from '@/api/blog/category/types';
 
+
+export const getCategorySelect = () => {
+  return request({
+    url: '/blog/category/articlesSelect',
+    method: 'get'
+  });
+};
+
 /**
  * 查询文章分类列表
  * @param query
